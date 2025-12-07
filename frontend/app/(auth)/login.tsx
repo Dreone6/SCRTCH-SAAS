@@ -76,16 +76,29 @@ export default function LoginScreen() {
   };
 
   const handleLogin = async () => {
-    if (!validate()) return;
+    console.log('🔐 Login button clicked');
+    console.log('📧 Email:', email);
+    
+    if (!validate()) {
+      console.log('❌ Validation failed');
+      return;
+    }
 
+    console.log('✅ Validation passed');
     setLoading(true);
+    
     try {
+      console.log('🔄 Calling signIn...');
       await signIn(email.trim().toLowerCase(), password);
+      console.log('✅ SignIn successful, navigating to dashboard...');
       router.replace('/(tabs)/dashboard');
+      console.log('✅ Navigation complete');
     } catch (error: any) {
+      console.error('❌ Login error:', error);
       Alert.alert('Login Failed', error.message || 'Please check your credentials and try again');
     } finally {
       setLoading(false);
+      console.log('🏁 Login process complete');
     }
   };
 
