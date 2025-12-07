@@ -147,8 +147,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    width: 350,
-    height: 120,
+    width: 700,
+    height: 240,
     tintColor: Colors.white,
   },
   iconContainer: {
