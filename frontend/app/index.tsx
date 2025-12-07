@@ -1,31 +1,33 @@
-import React, { useEffect } from 'react';
-import { View, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../src/contexts/AuthContext';
+import { AnimatedSplash } from '../src/components/AnimatedSplash';
 import { Colors } from '../src/constants/colors';
 
 export default function Index() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    if (!loading) {
+    // Only navigate after splash animation completes
+    if (!loading && !showSplash) {
       if (user) {
         router.replace('/(tabs)/dashboard');
       } else {
         router.replace('/(auth)/login');
       }
     }
-  }, [user, loading]);
+  }, [user, loading, showSplash]);
+
+  const handleAnimationEnd = () => {
+    setShowSplash(false);
+  };
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../assets/logos/prosperly-logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <ActivityIndicator size="large" color={Colors.prosperlyBlue} style={styles.loader} />
+      {showSplash && <AnimatedSplash onAnimationEnd={handleAnimationEnd} />}
     </View>
   );
 }
@@ -34,14 +36,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.prosperlyNavy,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 250,
-    height: 80,
-  },
-  loader: {
-    marginTop: 32,
   },
 });
