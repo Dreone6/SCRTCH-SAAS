@@ -90,7 +90,7 @@ export default function RatingScreen() {
             </View>
             <View style={styles.ratingLevel}>
               <RatingDisplay rating={{ stars: 1, label: 'Unreliable', ratio: 0.30 }} showLabel={false} size="small" />
-              <Text style={styles.levelText}>&lt; 40% on-time</Text>
+              <Text style={styles.levelText}>{'< 40% on-time'}</Text>
             </View>
           </View>
         </Card>
