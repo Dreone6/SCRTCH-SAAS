@@ -12,9 +12,12 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../../src/constants/colors';
 import { Typography } from '../../src/constants/typography';
+
+const ONBOARDING_KEY = '@prosperly_onboarding_complete';
 
 const { width } = Dimensions.get('window');
 
