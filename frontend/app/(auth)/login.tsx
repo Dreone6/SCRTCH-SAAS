@@ -76,17 +76,22 @@ export default function LoginScreen() {
   };
 
   const handleLogin = async () => {
+    console.log('🔐 Login initiated');
     if (!validate()) {
+      console.log('❌ Validation failed');
       return;
     }
 
+    console.log('✅ Validation passed, starting sign in...');
     setLoading(true);
     
     try {
+      console.log('🔄 Calling signIn...');
       await signIn(email.trim().toLowerCase(), password);
+      console.log('✅ SignIn completed, waiting for auth state change...');
       // Navigation will be handled by AuthContext automatically
     } catch (error: any) {
-      console.error('Login error:', error);
+      console.error('❌ Login error:', error);
       Alert.alert('Login Failed', error.message || 'Please check your credentials and try again');
       setLoading(false);
     }
