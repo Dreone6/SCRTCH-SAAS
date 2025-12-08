@@ -1,60 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { useRouter, useSegments } from 'expo-router';
-import { useAuth } from '../src/contexts/AuthContext';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { AnimatedSplash } from '../src/components/AnimatedSplash';
 import { Colors } from '../src/constants/colors';
 
+/**
+ * Index/Splash Screen
+ * Shows animated splash, then AuthGuard in _layout.tsx handles navigation
+ */
 export default function Index() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const segments = useSegments();
   const [showSplash, setShowSplash] = useState(true);
-  const [isNavigating, setIsNavigating] = useState(false);
-
-  useEffect(() => {
-    // Only navigate after splash animation completes and auth is loaded
-    if (!loading && !showSplash && !isNavigating) {
-      setIsNavigating(true);
-      
-      setTimeout(() => {
-        if (user) {
-          router.replace('/(tabs)/dashboard');
-        } else {
-          router.replace('/(auth)/login');
-        }
-      }, 100);
-    }
-  }, [user, loading, showSplash]);
-
-  // Handle auth state changes after initial load
-  useEffect(() => {
-    if (!loading && !showSplash) {
-      const inAuthGroup = segments[0] === '(auth)';
-      const inTabsGroup = segments[0] === '(tabs)';
-
-      console.log('🔄 Navigation check:', {
-        user: user ? 'exists' : 'null',
-        segments: segments,
-        inAuthGroup,
-        inTabsGroup,
-        loading,
-        showSplash
-      });
-
-      if (user && !inTabsGroup && inAuthGroup) {
-        // User is authenticated but in auth screens, redirect to dashboard
-        console.log('✅ Navigating authenticated user to dashboard');
-        router.replace('/(tabs)/dashboard');
-      } else if (!user && !inAuthGroup && inTabsGroup) {
-        // User is not authenticated but in protected screens, redirect to login
-        console.log('✅ Navigating unauthenticated user to login');
-        router.replace('/(auth)/login');
-      }
-    }
-  }, [user, segments, loading, showSplash]);
 
   const handleAnimationEnd = () => {
+    console.log('🎬 Splash animation complete');
     setShowSplash(false);
   };
 
@@ -66,14 +23,7 @@ export default function Index() {
     );
   }
 
-  if (loading || isNavigating) {
-    return (
-      <View style={[styles.container, styles.loadingContainer]}>
-        <ActivityIndicator size="large" color={Colors.prosperlyBlue} />
-      </View>
-    );
-  }
-
+  // After splash, render nothing - AuthGuard will handle navigation
   return null;
 }
 
@@ -81,9 +31,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.prosperlyNavy,
-  },
-  loadingContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
