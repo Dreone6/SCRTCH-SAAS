@@ -52,12 +52,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function loadUser(userId: string) {
     try {
+      console.log('🔄 AuthContext: Loading user data for', userId);
       const userData = await AuthService.getCurrentUser();
+      console.log('✅ AuthContext: User loaded', userData?.email);
       setUser(userData);
     } catch (error) {
-      console.error('Error loading user:', error);
+      console.error('❌ AuthContext: Error loading user:', error);
     } finally {
       setLoading(false);
+      console.log('✅ AuthContext: Loading complete');
     }
   }
 
