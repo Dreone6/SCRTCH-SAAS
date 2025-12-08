@@ -33,11 +33,22 @@ export default function Index() {
       const inAuthGroup = segments[0] === '(auth)';
       const inTabsGroup = segments[0] === '(tabs)';
 
+      console.log('🔄 Navigation check:', {
+        user: user ? 'exists' : 'null',
+        segments: segments,
+        inAuthGroup,
+        inTabsGroup,
+        loading,
+        showSplash
+      });
+
       if (user && !inTabsGroup && inAuthGroup) {
         // User is authenticated but in auth screens, redirect to dashboard
+        console.log('✅ Navigating authenticated user to dashboard');
         router.replace('/(tabs)/dashboard');
       } else if (!user && !inAuthGroup && inTabsGroup) {
         // User is not authenticated but in protected screens, redirect to login
+        console.log('✅ Navigating unauthenticated user to login');
         router.replace('/(auth)/login');
       }
     }
