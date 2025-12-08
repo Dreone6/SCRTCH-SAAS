@@ -1,0 +1,209 @@
+<analysis>
+<original_problem_statement>
+The user wants to build a peer-to-peer lending tracker and repayment reminder app called Prosperly.
+
+**PRODUCT REQUIREMENTS (Mobile App - Expo/React Native):**
+- **Brand:** Use Prosperly Blue (#186EDE), Inter font, and a specific handshake logo.
+- **Core Features:**
+    - Lending & Borrowing System: Create Lend and Borrow records (Prosperly Contracts).
+    - Repayment Tracking: Mark payments as paid, partial, etc.
+    - Automated Reminders: Use Expo Push Notifications for due dates.
+    - Dashboard: Show totals (lent, borrowed, outstanding), counts, and a graph.
+    - Prosperly Rating: A private 1-5 star rating based on on-time payment ratio.
+- **Authentication:** Email/Password via Supabase. Biometric (Face ID/Touch ID) sign-in was added based on user feedback.
+- **Data Storage:** Use Supabase for the database (PostgreSQL) and file storage (for avatars).
+- **Screens:** Onboarding, Splash, Auth (Login/Signup), Dashboard, Lend/Borrow Flows, Record Details, Notifications, Rating, and Profile/Settings.
+- **UI:** The user initially specified building from prompt descriptions but later provided reference screenshots and mentioned they would be creating designs in Figma/Stitch. The auth screens were redesigned to match a Clue app style reference.
+
+**PRODUCT REQUIREMENTS (Marketing Landing Page - Next.js):**
+- A single-page marketing site using Next.js and Tailwind CSS.
+- Sections: Hero, How It Works, Features, Preview, Trust, FAQ, and an Email Capture/Waitlist form.
+- Functionality: The waitlist form should save emails to a Supabase table ().
+- This task has not been started.
+
+**ADDITIONAL SCOPE (From Claude-generated documents):**
+The user provided extensive documents outlining a much larger scope, including:
+- AI-powered messaging (Claude API)
+- Digital signatures for loan agreements
+- PDF generation
+- Advanced user verification (Phone/Bank)
+- Payment integration (Stripe Connect)
+- Informal debt tracking (IOUs)
+</original_problem_statement>
+
+**User's preferred language**: English
+
+**what currently exists?**
+- A full-stack Expo (React Native) application connected to a Supabase backend.
+- The Supabase database schema is created and populated with 7 demo transactions for a test user.
+- Most core screens have been scaffolded using : Login, Signup, a tabbed layout with Dashboard, Transactions, Add, Rating, and Profile screens.
+- Authentication screens have been redesigned to match user-provided references, including buttons for biometrics, social logins (placeholders), and email.  is installed.
+- An animated splash screen using  has been implemented.
+- The logo size has been significantly increased across screens as per user request.
+- A critical bug in the authentication flow prevents navigation to the dashboard after a successful login.
+- To work around this, a temporary, unauthenticated route  has been created to display the populated dashboard, allowing the user to proceed with UI design work.
+
+**Last working item**:
+- Last item agent was working: The agent was troubleshooting the authentication flow. After confirming the backend login works, it was identified that the frontend does not navigate to the dashboard after a successful sign-in. The agent created a temporary  route to bypass this blocker for the user and added console logs to the login screen for debugging.
+- Status: IN PROGRESS
+- Agent Testing Done: N (The agent proved backend auth works via a script, but the end-to-end flow is broken).
+- Which testing method agent to use? manual testing by curl
+- User Testing Done: Y (User confirmed the login flow is not working).
+
+**All Pending/In progress Issue list**:
+  - Issue 1: Authentication flow is broken (P0 - HIGHEST PRIORITY)
+
+  Issues Detail:
+  - Issue 1: 
+     - **Description**: After a user successfully authenticates with a correct email and password, the app does not navigate away from the login screen to the main dashboard/tabs layout.
+     - **Attempted fixes**: 
+        1. The agent confirmed Supabase email confirmation was disabled.
+        2. The agent created a test script () that successfully creates a user and signs in via the Supabase client, proving the backend and credentials are correct. This isolates the issue to the frontend code.
+        3. The agent added  statements to the  function in  to trace the execution flow.
+     - **Next debug checklist**:
+        1.  Examine the browser's developer console for any errors logged from the new  statements when attempting to sign in.
+        2.  Inspect . Verify that the  function correctly sets the user session in the context's state.
+        3.  Inspect . Confirm that the  hook correctly listens for changes in the session state and triggers  to navigate to .
+        4.  Ensure there are no silent failures or unhandled promise rejections in the  logic.
+     - **Why fix this issue and what will be achieved with the fix?**: This is a critical bug blocking all core functionality of the app. Fixing it will allow users to log in and access the main application features.
+     - **Status**:  IN PROGRESS
+     - **Is recurring issue?** N
+     - **Should Test frontend/backend/both after fix?** Frontend
+     - **Blocked on other issue**: None
+
+**In progress Task List**:
+  There are no other tasks in progress. The focus is solely on fixing the authentication bug.
+
+**Upcoming and Future Tasks**
+Upcoming Tasks:
+- **P0: Integrate User's Figma/Stitch Designs**: Once the user provides the designs, the agent needs to replace the current placeholder UI with the new, high-fidelity components.
+- **P1: Implement Next.js Landing Page**: The requirement for a marketing website has not been started.
+- **P1: Implement AI-Powered Messaging**: Integrate the Claude API for in-app messaging, as specified in the user-provided build guide.
+- **P1: Implement Digital Signatures & PDF Generation**: Add functionality for users to sign agreements and generate PDF contracts.
+
+Future Tasks:
+- Implement Advanced User Verification (Phone via Twilio, Bank via Plaid).
+- Integrate Stripe Connect for payment processing.
+- Build the informal debt tracking (IOU) feature.
+- Implement advanced UI/UX enhancements (Lottie animations, haptics).
+- Build out the profile and settings screens with full functionality.
+- Implement the Expo Push Notification engine for reminders.
+
+**Completed work in this session**
+- **Backend & Database:**
+    - Switched from default stack to Supabase (PostgreSQL).
+    - Created and executed a complete SQL schema for all required tables (, , , ).
+    - Configured Row Level Security (RLS) policies for data protection.
+    - Populated the database with 7 sample transactions for a demo user.
+- **Application Scaffolding:**
+    - Set up a full Expo (React Native) project structure with .
+    - Created over 15 files for screens, components, contexts, and utilities.
+- **Feature Implementation:**
+    - Built an animated splash screen using .
+    - Implemented a redesigned authentication flow (based on user's Clue app reference) with UI for email, biometric, and placeholder social logins.
+    - Integrated  for Face ID/Touch ID.
+    - Implemented the logic for the private 5-star Prosperly Rating in .
+- **Bug Fixes & Troubleshooting:**
+    - Resolved a Supabase client-side rendering issue ().
+    - Fixed a JSX syntax error in the  screen.
+    - Systematically troubleshooted user connection issues, finding the public tunnel URL and providing multiple connection methods (web browser, manual Expo Go URL).
+    - Identified a critical security leak where the user posted a live Stripe key and guided them to revoke it immediately.
+
+**Earlier issues found/mentioned but not fixed**
+None. The only outstanding issue is the P0 authentication bug, which is actively being worked on.
+
+**Known issue recurrence from previous fork**
+N/A
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+- **Frontend:** React Native, Expo, TypeScript, Expo Router (file-based routing)
+- **Backend:** Supabase (PostgreSQL Database, Authentication, Storage)
+- **State Management:** React Context ()
+- **Styling:** React Native 
+- **Animation:** 
+- **Authentication:** Supabase Auth client,  for biometrics
+
+**key DB schema**
+- : {id, email, name, avatar_url, push_token, total_payments, on_time_payments}
+- : {id, user_id, counterparty_name, type, amount, due_date, status, ...}
+- : {id, user_id, transaction_id, type, sent_at}
+- : {id, email, created_at}
+-  & : For file uploads (avatars).
+
+**changes in tech stack**
+- The project pivoted from the default **FastAPI + MongoDB** stack to **Supabase** (PostgreSQL) at the user's request.
+- A new requirement for a **Next.js + Tailwind CSS** landing page was added.
+
+**All files of reference**
+- : Contains the broken sign-in navigation logic.
+- : Manages the user session and auth functions.
+- : Root layout responsible for redirecting based on auth state.
+- : The temporary bypass route to view the dashboard.
+- : The source of truth for the database schema.
+- : A full summary of work done for the user.
+- : User-provided document outlining significant scope expansion.
+- : The agent's plan to tackle the new scope.
+
+**Areas that need refactoring**:
+- The entire authentication flow needs to be fixed.
+- The social login buttons in  are currently non-functional placeholders and should be either implemented or clearly marked as disabled.
+
+**key api endpoints**
+N/A. The application interacts directly with the Supabase backend via the  client library, not over a custom REST API.
+
+**Critical Info for New Agent**
+- **Auth Bug is P0**: Your immediate priority is to fix the navigation issue after a successful login. The credentials to test are in the  section below. The backend part of login is confirmed to be working.
+- **Temporary Dashboard Exists**: The user is aware of the auth bug and is using a temporary route () to view the UI. You can use its direct URL to see the populated dashboard.
+- **Massive Scope Expansion**: The user uploaded documents from Claude Anthropic that dramatically increase the project's scope (AI chat, PDFs, Stripe, etc.). An integration plan exists at . Do not start this work until the auth bug is fixed and you've confirmed priorities with the user.
+- **Security Incident**: The user accidentally leaked a live Stripe secret key. The agent handled it correctly, and the user confirmed it was revoked. Be cautious with any keys the user provides.
+- **No Next.js work started**: The landing page requirement has not been addressed yet.
+
+**documents created in this job**
+- /app/SUPABASE_SETUP.md
+- /app/PROSPERLY_SETUP_COMPLETE.md
+- /app/SPLASH_SCREEN_GUIDE.md
+- /app/MOBILE_TESTING_GUIDE.md
+- /app/CONNECT_NOW.md
+- /app/HOW_TO_SIGN_IN.md
+- /app/SUPABASE_FIX.md
+- /app/FIGMA_STITCH_INTEGRATION_GUIDE.md
+- /app/PROSPERLY_COMPLETE_BREAKDOWN.md
+- /app/CLAUDE_BUILD_GUIDE.md (from user)
+- /app/CLAUDE_UI_GUIDE.md (from user)
+- /app/INTEGRATION_PLAN.md
+
+**Last 10 User Messages and any pending user messages**
+1.  **User (217):** Shared two documents with a comprehensive build and UI from Claude.
+2.  **User (227):** Shared a secret API key, mistakenly identifying it as for Supabase.
+3.  **Agent (228):** Identified the key as a LIVE Stripe secret key, raised a critical security alert, and instructed the user to revoke it immediately. (RESOLVED)
+4.  **User (229):** Confirmed they deleted the key. (RESOLVED)
+5.  **Agent (230):** Confirmed security issue is resolved and asked the user to clarify the next steps (fix auth bug vs. design first).
+6.  *No pending user messages. The agent is waiting for the user's direction on what to do next after the bug fix vs. design discussion.*
+
+**Project Health Check:**
+- **Broken:** The user authentication flow (login navigation).
+- **Mocked:** N/A. A temporary bypass route () was created, which is not mocked data but a real view with a different entry point.
+
+**3rd Party Integrations**
+- **Supabase:** Used for Authentication, Database (PostgreSQL), and Storage.
+- **Expo:** Used for push notifications.
+- **(Planned) Claude/Anthropic:** For AI messaging. Requires API key.
+- **(Planned) Stripe:** For payments. Requires TEST API keys for development.
+- **(Planned) Twilio:** For phone verification. Requires Account SID and Auth Token.
+
+**Testing status**
+- Testing agent used after significant changes: NO
+- Troubleshoot agent used after agent stuck in loop: NO
+- Test files created: ,  (scripts for manual testing).
+- Known regressions: None.
+
+**Credentials to test flow:**
+- **Email:** 
+- **Password:** 
+
+**What agent forgot to execute**
+- The agent has not yet started work on the **Next.js marketing landing page**, which was a key part of the user's tech stack update. This should be added to the upcoming tasks. The agent correctly prioritized the mobile app's core functionality and bug fixing, but this remains an outstanding, user-requested feature.
+</analysis>
