@@ -75,11 +75,21 @@ export default function OnboardingScreen() {
     }
   };
 
-  const handleSkip = () => {
+  const markOnboardingComplete = async () => {
+    try {
+      await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
+    } catch (error) {
+      console.error('Error saving onboarding state:', error);
+    }
+  };
+
+  const handleSkip = async () => {
+    await markOnboardingComplete();
     router.replace('/(auth)/signup');
   };
 
-  const handleGetStarted = () => {
+  const handleGetStarted = async () => {
+    await markOnboardingComplete();
     router.replace('/(auth)/signup');
   };
 
