@@ -69,12 +69,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function signIn(email: string, password: string) {
-    setLoading(true);
     try {
       await AuthService.signIn(email, password);
       // User will be set via onAuthStateChange
+      // Don't set loading here, let the auth state change handle it
     } catch (error) {
-      setLoading(false);
       throw error;
     }
   }
