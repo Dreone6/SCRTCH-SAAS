@@ -115,7 +115,38 @@ export interface Reminder {
   sent_at?: string;
   status: ReminderStatus;
   message_preview?: string;
+  ai_generated_message?: string;
+  tone_used?: MessageTone;
+  borrower_response?: string;
+  effectiveness_score?: number; // 1-5
+  days_overdue_when_sent?: number;
   created_at: string;
+}
+
+export interface ConversationMessage {
+  id: string;
+  loan_id: string;
+  message_type: MessageType;
+  sender: MessageSender;
+  message: string;
+  tone?: MessageTone;
+  created_at: string;
+}
+
+export interface MessageTemplate {
+  id: string;
+  relationship_type: RelationshipType;
+  tone: MessageTone;
+  days_overdue_range: string;
+  template_text: string;
+  placeholders?: Record<string, boolean>;
+  created_at: string;
+}
+
+export interface GeneratedMessage {
+  text: string;
+  tone: MessageTone;
+  rationale?: string;
 }
 
 export interface BorrowerRating {
