@@ -62,6 +62,10 @@ export type RepaymentType = 'lump_sum' | 'split' | 'installments';
 export type InstallmentStatus = 'pending' | 'overdue' | 'paid';
 export type ReminderChannel = 'email' | 'sms' | 'in_app';
 export type ReminderStatus = 'scheduled' | 'sent' | 'failed';
+export type RelationshipType = 'family' | 'close_friend' | 'friend' | 'acquaintance' | 'business';
+export type MessageTone = 'friendly' | 'direct' | 'urgent';
+export type MessageSender = 'system' | 'lender' | 'borrower';
+export type MessageType = 'reminder' | 'response' | 'note' | 'payment_received';
 
 export interface Borrower {
   id: string;
@@ -70,6 +74,8 @@ export interface Borrower {
   phone?: string;
   email?: string;
   notes?: string;
+  relationship_type?: RelationshipType;
+  preferred_contact_method?: ReminderChannel;
   created_at: string;
 }
 
