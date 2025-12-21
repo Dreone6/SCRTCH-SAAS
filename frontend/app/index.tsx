@@ -18,7 +18,7 @@ export default function Index() {
   if (showSplash) {
     return (
       <View style={styles.container}>
-        <AnimatedSplash onAnimationEnd={handleAnimationEnd} />
+        <AnimatedSplashBranded onAnimationEnd={handleAnimationEnd} />
       </View>
     );
   }
