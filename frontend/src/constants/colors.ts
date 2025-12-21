@@ -8,6 +8,7 @@ export const Colors = {
   prosperlyNavy: '#1F2937',
   prosperlyMint: '#10B981',
   prosperlySlate: '#F3F4F6',
+  prosperlyGold: '#FCD34D',
   
   // Neutrals
   white: '#FFFFFF',
