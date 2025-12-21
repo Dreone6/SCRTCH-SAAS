@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { AnimatedSplash } from '../src/components/AnimatedSplash';
+import { AnimatedSplashBranded } from '../src/components/AnimatedSplashBranded';
 import { Colors } from '../src/constants/colors';
 
 /**
