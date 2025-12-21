@@ -1,35 +1,36 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { AnimatedSplashBranded } from '../src/components/AnimatedSplashBranded';
+import { SplashScreen } from '../src/components/SplashScreen';
 import { Colors } from '../src/constants/colors';
 
 /**
- * Index/Splash Screen
- * Shows animated splash, then AuthGuard in _layout.tsx handles navigation
+ * App Entry Point
+ * Shows splash screen FIRST, then AuthGuard handles routing
  */
 export default function Index() {
   const [showSplash, setShowSplash] = useState(true);
 
-  const handleAnimationEnd = () => {
+  const handleSplashComplete = () => {
     console.log('🎬 Splash animation complete');
     setShowSplash(false);
   };
 
+  // Always show splash first, regardless of auth state
   if (showSplash) {
     return (
       <View style={styles.container}>
-        <AnimatedSplashBranded onAnimationEnd={handleAnimationEnd} />
+        <SplashScreen onComplete={handleSplashComplete} />
       </View>
     );
   }
 
-  // After splash, render nothing - AuthGuard will handle navigation
+  // After splash, render nothing - AuthGuard in _layout will handle navigation
   return null;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.prosperlyNavy,
+    backgroundColor: Colors.primary,
   },
 });
