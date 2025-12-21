@@ -1,12 +1,13 @@
 // Prosperly Brand Colors
 export const Colors = {
-  // Primary
-  prosperlyBlue: '#186EDE',
+  // SCRTCH Brand Colors (Finalized)
+  scrtchBlue: '#4A90E2',      // Primary - buttons, links, CTAs
   
-  // Secondary
-  prosperlyNavy: '#0A1A3A',
-  prosperlyMint: '#37D0A4',
-  prosperlySlate: '#E8EDF3',
+  // Legacy (deprecated - keeping for backwards compatibility)
+  prosperlyBlue: '#4A90E2',
+  prosperlyNavy: '#1F2937',
+  prosperlyMint: '#10B981',
+  prosperlySlate: '#F3F4F6',
   
   // Neutrals
   white: '#FFFFFF',
