@@ -1,4 +1,4 @@
-// Prosperly Brand Colors
+// SCRTCH Brand Colors
 export const Colors = {
   // SCRTCH Brand Colors (Finalized)
   scrtchBlue: '#4A90E2',      // Primary - buttons, links, CTAs
