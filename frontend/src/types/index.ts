@@ -165,6 +165,15 @@ export interface AgreementDocument {
   generated_at: string;
 }
 
+export interface LennyConversationSummary {
+  loanId: string;
+  borrower: Borrower;
+  loan: Loan;
+  lastMessage: string;
+  lastMessageAt: string;
+  lastMessageSender: 'system' | 'lender' | 'borrower';
+}
+
 // Extended types with joined data
 export interface LoanWithBorrower extends Loan {
   borrower: Borrower;
