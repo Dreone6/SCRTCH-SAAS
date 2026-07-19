@@ -50,6 +50,71 @@ export class LoanService {
     return data;
   }
 
+  // Borrowers enriched with computed stats (outstanding balance from loans/
+  // installments, trust score average from borrower_ratings) for the Circle
+  // screen. None of these fields are denormalized on the borrowers table --
+  // they are computed here rather than assumed to exist.
+  static async getBorrowersWithStats(userId: string): Promise<Array<Borrower & { outstandingAmount: number; trustScore: number | null }>> {
+    const borrowers = await this.getBorrowers(userId);
+    if (borrowers.length === 0) return [];
+
+    const borrowerIds = borrowers.map((b) => b.id);
+
+    const [{ data: loans, error: loansError }, { data: ratings, error: ratingsError }] = await Promise.all([
+      supabase
+        .from('loans')
+        .select('id, borrower_id, principal_amount')
+        .in('borrower_id', borrowerIds)
+        .eq('user_id', userId),
+      supabase
+        .from('borrower_ratings')
+        .select('borrower_id, score')
+        .in('borrower_id', borrowerIds)
+        .eq('user_id', userId),
+    ]);
+
+    if (loansError) throw loansError;
+    if (ratingsError) throw ratingsError;
+
+    const loanIds = (loans || []).map((l: any) => l.id);
+    const { data: installments, error: installmentsError } = loanIds.length
+      ? await supabase.from('installments').select('loan_id, amount_due, amount_paid').in('loan_id', loanIds)
+      : { data: [], error: null };
+
+    if (installmentsError) throw installmentsError;
+
+    const outstandingByLoan = new Map<string, number>();
+    for (const inst of installments || []) {
+      const remaining = Number(inst.amount_due) - Number(inst.amount_paid);
+      outstandingByLoan.set(inst.loan_id, (outstandingByLoan.get(inst.loan_id) || 0) + Math.max(remaining, 0));
+    }
+
+    const outstandingByBorrower = new Map<string, number>();
+    for (const loan of loans || []) {
+      const loanOutstanding = outstandingByLoan.get(loan.id) ?? Number(loan.principal_amount);
+      outstandingByBorrower.set(
+        loan.borrower_id,
+        (outstandingByBorrower.get(loan.borrower_id) || 0) + loanOutstanding
+      );
+    }
+
+    const ratingsByBorrower = new Map<string, number[]>();
+    for (const r of ratings || []) {
+      const list = ratingsByBorrower.get(r.borrower_id) || [];
+      list.push(r.score);
+      ratingsByBorrower.set(r.borrower_id, list);
+    }
+
+    return borrowers.map((b) => {
+      const scores = ratingsByBorrower.get(b.id);
+      return {
+        ...b,
+        outstandingAmount: outstandingByBorrower.get(b.id) || 0,
+        trustScore: scores && scores.length ? scores.reduce((a, c) => a + c, 0) / scores.length : null,
+      };
+    });
+  }
+
   // ============================================
   // LOAN OPERATIONS
   // ============================================
