@@ -11,6 +11,7 @@ export interface User {
   email: string;
   name: string;
   avatar_url?: string;
+  signature_url?: string;
   total_payments: number;
   on_time_payments: number;
   created_at: string;
@@ -163,6 +164,15 @@ export interface AgreementDocument {
   loan_id: string;
   document_text: string;
   generated_at: string;
+}
+
+export interface LennyConversationSummary {
+  loanId: string;
+  borrower: Borrower;
+  loan: Loan;
+  lastMessage: string;
+  lastMessageAt: string;
+  lastMessageSender: 'system' | 'lender' | 'borrower';
 }
 
 // Extended types with joined data

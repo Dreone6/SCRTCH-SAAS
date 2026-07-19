@@ -28,7 +28,7 @@ export default function ProfileScreen() {
     try {
       setUploadingAvatar(true);
       const imageUri = await StorageService.pickImage();
-      
+
       if (imageUri && user) {
         const avatarUrl = await StorageService.uploadAvatar(user.id, imageUri);
         await AuthService.updateProfile(user.id, { avatar_url: avatarUrl });
@@ -88,7 +88,7 @@ export default function ProfileScreen() {
         {/* Account Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Account</Text>
-          
+
           <TouchableOpacity style={styles.menuItem}>
             <View style={styles.menuItemLeft}>
               <Ionicons name="person-outline" size={24} color={Colors.prosperlyBlue} />
@@ -109,7 +109,7 @@ export default function ProfileScreen() {
         {/* Preferences Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Preferences</Text>
-          
+
           <TouchableOpacity style={styles.menuItem}>
             <View style={styles.menuItemLeft}>
               <Ionicons name="notifications-outline" size={24} color={Colors.prosperlyBlue} />
@@ -127,10 +127,39 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Scrtch Section (added: Circle, Signature, Upgrade) */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Scrtch</Text>
+
+          <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/circle')}>
+            <View style={styles.menuItemLeft}>
+              <Ionicons name="people-outline" size={24} color={Colors.prosperlyBlue} />
+              <Text style={styles.menuItemText}>My Circle</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={Colors.gray[400]} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/signature' as any)}>
+            <View style={styles.menuItemLeft}>
+              <Ionicons name="create-outline" size={24} color={Colors.prosperlyBlue} />
+              <Text style={styles.menuItemText}>My Signature</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={Colors.gray[400]} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/paywall' as any)}>
+            <View style={styles.menuItemLeft}>
+              <Ionicons name="sparkles-outline" size={24} color={Colors.prosperlyBlue} />
+              <Text style={styles.menuItemText}>Upgrade to Pro</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={Colors.gray[400]} />
+          </TouchableOpacity>
+        </View>
+
         {/* Support Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Support</Text>
-          
+
           <TouchableOpacity style={styles.menuItem}>
             <View style={styles.menuItemLeft}>
               <Ionicons name="help-circle-outline" size={24} color={Colors.prosperlyBlue} />
