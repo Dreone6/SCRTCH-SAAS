@@ -11,6 +11,7 @@ export interface User {
   email: string;
   name: string;
   avatar_url?: string;
+  signature_url?: string;
   total_payments: number;
   on_time_payments: number;
   created_at: string;
